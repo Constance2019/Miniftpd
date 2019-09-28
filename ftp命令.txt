@@ -1,0 +1,63 @@
+﻿防火墙：
+systemctl start   firewalld.service
+systemctl stop    firewalld.service
+systemctl restart firewalld.service
+
+ftp:
+service vsftpd start
+service vsftpd restart
+service vsftpd stop
+lftp 192.168.0.50
+
+lftp:
+下载文件:
+get <filename>
+mirror <dirname>ls
+
+ftp使用方法
+ftp [-vdng] [用户名:密码@<FQDN>]|<IP地址>|
+< 主机名> <IP地址>：需要连接的FTP服务器的IP地址FQDN
+-v :显示远程服务器的所有响应信息
+-d :使用调试方式访问FTP服务器
+-n :限制ftp的自动登录，即当登录到FTP服务器时，不自动执行  .netrc文件
+进入FTP中可以可以使用的命令详解
+![命令[参数]]  ：在FTP客户端中执行命令
+open <FQDN>|<IP地址>：打开指定的FTP服务器
+bye :退出FTP会话过程 
+cd 目录：切换ＦＴＰ服务器的当前目录。
+dir [目录][本地文件]：显示FTP服务器目录，并将结果存入本地文件 
+put 文件：将单个文件上传到FPT服务器
+mput: 将多个文件上传到FTP服务器
+get 文件：从FTP服务器下载单个文件到本地当前目录
+mget 文件：从FTP服务器下载多个文件到本地当前目录
+delete 文件名：FTP服务器上的文件
+case :在使用mget时，将远程主机文件名中的大写转为小写字母
+pwd ：显示 远程主机的当前工作目录。
+rmdir 目录名:删除FTP服务器上的目录
+       
+lftp命令使用
+lftp ftp://[用户名:密码@]<FQDN>|<IP地址> [:端口]
+lftp ftp://<FQDN>|<IP 地址> -p port -u 用户名,密码
+help:查看全部可操作的命令
+ls : 显示FTP服务器文件列表
+!ls: 显示本地文件列表
+cd: 切换远端目录
+lcd: 切换本地目录
+get: 从FTP服务器下载单个文件到本地当前目录
+mget: 从FTP服务器下载多个文件到本地当前目录
+pget :使用多个线程来下载远端文件
+put : 将单个文件上传到FTP服务器
+mput :将多个文件上传到FTP服务器
+mv :移动FTP服务器上的文件
+rm: 删除FTP服务器上的文件 (使用参数 -r 递归删除)
+mrm: 删除FTP服务器上的多个目录
+mkdir :在FTP服务器上建立目录
+pwd : 显示日前FTP服务器所有目录
+lpwd: 显示本地目录
+exit :退出ftp会话过程
+ 
+发现没有权限创建文件或是目录，查找原因，原来是selinux引起的登陆问题。
+为避免每次开机都要作这个操作，可在setsebool命令后面加上-P选项，使改动永久有效
+getsebool -a | grep ftp
+sestatus -b| grep ftp
+
